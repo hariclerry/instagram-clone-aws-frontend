@@ -33,14 +33,42 @@
   width: 100%;
 }
 .Post-caption {
+  display: flex;
+  justify-content: space-between;
   padding: 16px 16px;
 }
 .Post-caption strong {
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
+  padding-right: 10px;
 }
 .vjs-fade-out {
   display: none;
   visibility: hidden;
   opacity: 0;
+}
+
+.upload-modal {
+  display: flex;
+  padding: 16px 290px 40px 16px;
+  justify-content: flex-end;
+}
+
+.like-icon {
+  font-size: 20px;
+  padding: 20px;
+  color: red;
+}
+
+.unlike-icon {
+  font-size: 20px;
+  padding: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .upload-modal {
+    display: flex;
+    padding: 26px;
+    justify-content: center;
+  }
 }
