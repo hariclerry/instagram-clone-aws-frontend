@@ -1,0 +1,19 @@
+.image-upload {
+    display: flex;
+
+    margin: 40px 0 40px 0;
+}
+
+.text-muted {
+    color: red !important;
+}
+
+.feeds-spinner {
+    display: flex;
+    justify-content: center;
+}
+
+button:focus {
+  outline:none;
+  box-shadow: none;
+}

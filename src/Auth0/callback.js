@@ -1,8 +1,20 @@
 import React, { Component } from "react";
+import { Spinner } from "react-bootstrap";
 
 class Callback extends Component {
   render() {
-    return <p>Loading profile...</p>;
+    return (
+      <div
+        className="feeds-spinner"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "30px",
+        }}
+      >
+        <Spinner animation="border" variant="success" />{" "}
+      </div>
+    );
   }
 }
 

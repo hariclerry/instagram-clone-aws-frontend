@@ -1,29 +1,24 @@
 import { apiEndpoint } from "../config";
-import { Todo } from "../types/Todo";
-import { CreateTodoRequest } from "../types/CreateTodoRequest";
 import Axios from "axios";
-import { UpdateTodoRequest } from "../types/UpdateTodoRequest";
 
-export async function getTodos(idToken){
-  console.log("Fetching todos");
+export async function getFeeds(idToken){
 
-  const response = await Axios.get(`${apiEndpoint}/todos`, {
+  const response = await Axios.get(`${apiEndpoint}/feeds`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${idToken}`,
     },
   });
-  console.log("Todos:", response.data);
   return response.data.items;
 }
 
-export async function createTodo(
+export async function createFeed(
   idToken,
-  newTodo
+  newFeed
 ){
   const response = await Axios.post(
-    `${apiEndpoint}/todos`,
-    JSON.stringify(newTodo),
+    `${apiEndpoint}/feeds`,
+    JSON.stringify(newFeed),
     {
       headers: {
         "Content-Type": "application/json",
@@ -34,14 +29,14 @@ export async function createTodo(
   return response.data.item;
 }
 
-export async function patchTodo(
+export async function patchFeed(
   idToken,
-  todoId,
-  updatedTodo,
+  feedId,
+  updatedFeed,
 ){
   await Axios.patch(
-    `${apiEndpoint}/todos/${todoId}`,
-    JSON.stringify(updatedTodo),
+    `${apiEndpoint}/feeds/${feedId}`,
+    JSON.stringify(updatedFeed),
     {
       headers: {
         "Content-Type": "application/json",
@@ -51,11 +46,11 @@ export async function patchTodo(
   );
 }
 
-export async function deleteTodo(
+export async function deleteFeed(
   idToken,
-  todoId
+  feedId
 ) {
-  await Axios.delete(`${apiEndpoint}/todos/${todoId}`, {
+  await Axios.delete(`${apiEndpoint}/feeds/${feedId}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${idToken}`,
@@ -63,26 +58,22 @@ export async function deleteTodo(
   });
 }
 
-export async function getUploadUrl(
-  idToken,
-  todoId
-) {
-  const response = await Axios.post(
-    `${apiEndpoint}/todos/${todoId}/attachment`,
-    "",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-    }
-  );
-  return response.data.uploadUrl;
-}
+export async function getUploadUrl(idToken, imageUrl) {
+         const response = await Axios.post(
+           `${apiEndpoint}/feeds/attachment/${imageUrl}`,
+           "",
+           {
+             headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${idToken}`,
+             },
+           }
+         );
+         return response.data.uploadUrl;
+       }
 
 export async function uploadFile(
-  uploadUrl,
-  file
+  uploadUrl, file
 ){
   await Axios.put(uploadUrl, file);
 }

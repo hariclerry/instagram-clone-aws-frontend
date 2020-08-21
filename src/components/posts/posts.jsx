@@ -1,81 +1,186 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import { Button, Spinner } from "react-bootstrap";
 
-import postImage from "../../assets/martin-bee.jpg";
-import postImage2 from "../../assets/dylan-sauerwein-unsplash.jpg";
-import userAvatar from "../../assets/harriet.jpeg";
-import userAvatar2 from "../../assets/martin-bee.jpg";
-import UploadModal from '../modal/modal'
+import UploadModal from "../modal/createFeedmodal";
+import FeedLists from "../feed-lists/feedList";
+import EditUploadModal from "../modal/editModal";
+import {
+  getFeeds,
+  deleteFeed,
+  patchFeed,
+  getUploadUrl,
+  uploadFile,
+  createFeed,
+} from "../../api/feedsApi";
 import "./posts.css";
 
-class Post extends Component {
-  render() {
-    // const nickname = this.props.nickname;
-    // const avatar = this.props.avatar;
-    // const image = this.props.image;
-    // const caption = this.props.caption;
+const Post = (props) => {
+  const [feeds, setFeeds] = useState([]);
+  const [tempFeed, setTempFeed] = useState({ imageCaption: "" });
+  const [imageCaption, setImageCaption] = useState("");
+  const [file, setFile] = useState("");
+  const [loadingFeeds, setLoadingFeeds] = useState(false);
+  const [loading, setisLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
-    return (
+  useEffect(() => {
+    onFectch();
+  }, []);
+
+  const handleClose = () => {
+    setShow(false);
+    setIsEdit(false);
+    setFile("");
+    setImageCaption("");
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const handleEditShow = (feed) => {
+    setTempFeed({
+      feedId: feed.feedId,
+      imageCaption: feed.imageCaption,
+      likes: feed.likes,
+    });
+    setIsEdit(true);
+  };
+  const onFectch = async () => {
+    try {
+      setLoadingFeeds(true);
+      const data = await getFeeds(props.auth.getIdToken());
+      setFeeds(data);
+      setLoadingFeeds(false);
+    } catch (e) {
+      alert(`Failed to fetch feeds: ${e.message}`);
+    }
+  };
+  const handleFeedDelete = async (feedId) => {
+    try {
+      await deleteFeed(props.auth.getIdToken(), feedId);
+      const filteredFeeds = feeds.filter((feed) => feed.feedId !== feedId);
+      setFeeds(filteredFeeds);
+    } catch {
+      alert("Feed deletion failed");
+    }
+  };
+
+  const handleChangeInput = (event) => {
+    setImageCaption(event.target.value);
+  };
+
+  const handleChangeInputEdit = (event) => {
+    const { name, value } = event.target;
+    setTempFeed({ ...tempFeed, [name]: value });
+  };
+
+  const handleFileChange = (event) => {
+    event.preventDefault();
+
+    const files = event.target.files;
+    if (!files) return;
+
+    setFile(files[0]);
+  };
+
+  const handleCreateSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { name } = file;
+      if (!file && !imageCaption) {
+        alert("File should be selected and caption added");
+        return;
+      }
+      setisLoading(true);
+      const uploadUrl = await getUploadUrl(props.auth.getIdToken(), name);
+      await uploadFile(uploadUrl, file);
+      await createFeed(props.auth.getIdToken(), {
+        imageCaption: imageCaption,
+        imageUrl: name,
+      });
+      setisLoading(false);
+      handleClose();
+      onFectch();
+    } catch (error) {
+      alert("Could not upload a file: " + error.message);
+    }
+  };
+
+  const handleFeedUpdateSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { feedId, likes, imageCaption } = tempFeed;
+      setisLoading(true);
+      await patchFeed(props.auth.getIdToken(), feedId, {
+        imageCaption: imageCaption,
+        likes: likes,
+      });
+      setisLoading(false);
+      handleClose();
+      onFectch();
+    } catch {
+      alert("Feed update failed");
+    }
+  };
+
+  const handleFeedLikes = async (feed) => {
+    try {
+      const feedId = feed.feedId;
+      const liked = feed.likes === false || feed.likes === null ? true : false;
+
+      await patchFeed(props.auth.getIdToken(), feedId, {
+        imageCaption: feed.imageCaption,
+        likes: liked,
+      });
+      onFectch();
+    } catch {
+      alert("Feed update failed");
+    }
+  };
+
+  return (
+    <Fragment>
       <section>
         <div className="upload-modal">
-          <UploadModal />
+          <Button variant="primary" onClick={handleShow}>
+            Update Status
+          </Button>
+          <UploadModal
+            onChangeInput={handleChangeInput}
+            onFileChange={handleFileChange}
+            onHandleCreateSubmit={handleCreateSubmit}
+            onHandleClose={handleClose}
+            imageCaption={imageCaption}
+            file={file}
+            show={show}
+            loading={loading}
+          />
         </div>
-        <article className="Post" ref="Post">
-          <header>
-            <div className="Post-user">
-              <div className="Post-user-avatar">
-                <img src={userAvatar} alt="hari" />
-              </div>
-              <div className="Post-user-nickname">
-                <span>Harriet</span>
-              </div>
-            </div>
-          </header>
-          <div className="Post-image">
-            <div className="Post-image-bg">
-              <img alt="Amazing post!" src={postImage} />
-            </div>
+        {((feeds && feeds.length > 0) || !loadingFeeds ) ? (
+          <FeedLists
+            feeds={feeds}
+            onFeedDelete={handleFeedDelete}
+            onFeedLike={handleFeedLikes}
+            handleEditShow={handleEditShow}
+          />
+        ) : (
+          <div className="feeds-spinner">
+            <Spinner animation="border" variant="success" />
+            <h1> No Feeds </h1>
           </div>
-          <div>
-            <i className="fa fas fa-heart-o unlike-icon"></i>
-          </div>
-          <div className="Post-caption">
-            <p>
-              <strong>Hari</strong>Amazing post!
-            </p>
-            <i className="fa fa-edit fa-lg"></i>
-          </div>
-        </article>
+        )}
 
-        <article className="Post" ref="Post">
-          <header>
-            <div className="Post-user">
-              <div className="Post-user-avatar">
-                <img src={userAvatar2} alt="Rocky" />
-              </div>
-              <div className="Post-user-nickname">
-                <span>Rocky</span>
-              </div>
-            </div>
-          </header>
-          <div className="Post-image">
-            <div className="Post-image-bg">
-              <img alt="Holding a mic" src={postImage2} />
-            </div>
-          </div>
-          <div>
-            <i className="fa fas fa-heart like-icon"></i>
-          </div>
-          <div className="Post-caption">
-            <p>
-              {" "}
-              <strong>RockStar</strong>
-              Holding a mic{" "}
-            </p>
-            <i className="fa fa-edit fa-lg"></i>
-          </div>
-        </article>
+        <EditUploadModal
+          onChangeInput={handleChangeInputEdit}
+          onHandleClose={handleClose}
+          isEdit={isEdit}
+          onFeedUpdateSubmit={handleFeedUpdateSubmit}
+          tempFeed={tempFeed}
+          loading={loading}
+        />
       </section>
-    );
-  }
-}
+    </Fragment>
+  );
+};
 export default Post;

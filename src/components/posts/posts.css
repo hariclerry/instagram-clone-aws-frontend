@@ -65,6 +65,26 @@
   padding: 20px;
 }
 
+.Post-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Post-header button {
+  border: none;
+  background: none;
+}
+
+button:focus {
+  outline:none;
+  box-shadow: none;
+}
+
+.feeds-spinner {
+    display: flex;
+    justify-content: center;
+}
+
 @media only screen and (max-width: 600px) {
   .upload-modal {
     display: flex;

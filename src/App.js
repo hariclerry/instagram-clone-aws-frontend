@@ -3,8 +3,8 @@ import { Route, Router, Switch } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
 import { NotFound } from "./components/notFound/notFound";
-import UploadImage from "./components/upload-image/uploadImage";
 import Post from "./components/posts/posts";
+import {LogIn} from "./components/login/login"
 
 import "./App.css";
 
@@ -70,9 +70,9 @@ export default class App extends Component {
   }
 
   generateCurrentPage() {
-    // if (!this.props.auth.isAuthenticated()) {
-    //   return <LogIn auth={this.props.auth} />;
-    // }
+    if (!this.props.auth.isAuthenticated()) {
+      return <LogIn auth={this.props.auth} />;
+    }
 
     return (
       <Switch>
@@ -84,13 +84,6 @@ export default class App extends Component {
           }}
         />
 
-        <Route
-          path="/status"
-          exact
-          render={(props) => {
-            return <UploadImage {...props} auth={this.props.auth} />;
-          }}
-        />
 
         <Route component={NotFound} />
       </Switch>
