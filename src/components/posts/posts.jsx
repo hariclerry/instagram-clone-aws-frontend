@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Button, Spinner } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 import UploadModal from "../modal/createFeedmodal";
 import FeedLists from "../feed-lists/feedList";
@@ -157,7 +157,7 @@ const Post = (props) => {
             loading={loading}
           />
         </div>
-        {((feeds && feeds.length > 0) || !loadingFeeds ) ? (
+        {(feeds && feeds.length > 0 ) ? (
           <FeedLists
             feeds={feeds}
             onFeedDelete={handleFeedDelete}
@@ -166,7 +166,6 @@ const Post = (props) => {
           />
         ) : (
           <div className="feeds-spinner">
-            <Spinner animation="border" variant="success" />
             <h1> No Feeds </h1>
           </div>
         )}
