@@ -1,0 +1,95 @@
+.Post {
+  border-radius: 3px;
+  border: 1px solid #e6e6e6;
+  background-color: #fff;
+  margin-bottom: 60px;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+.Post-user {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+}
+.Post-user-avatar {
+  width: 30px;
+  height: 30px;
+}
+.Post-user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.Post-user-nickname {
+  margin-left: 12px;
+  font-family: "PT Sans", sans-serif;
+  font-weight: bold;
+}
+.Post-image-bg {
+  background-color: #efefef;
+}
+.Post-image img {
+  display: block;
+  width: 100%;
+}
+.Post-caption {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 16px;
+}
+.Post-caption strong {
+  font-family: "PT Sans", sans-serif;
+  font-weight: bold;
+  padding-right: 10px;
+}
+.vjs-fade-out {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.upload-modal {
+  display: flex;
+  padding: 16px 290px 40px 16px;
+  justify-content: flex-end;
+}
+
+.like-icon {
+  font-size: 20px;
+  padding: 20px;
+  color: red;
+}
+
+.unlike-icon {
+  font-size: 20px;
+  padding: 20px;
+}
+
+.Post-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Post-header button {
+  border: none;
+  background: none;
+}
+
+button:focus {
+  outline:none;
+  box-shadow: none;
+}
+
+.feeds-spinner {
+    display: flex;
+    justify-content: center;
+    padding-top: 150px;
+}
+
+@media only screen and (max-width: 600px) {
+  .upload-modal {
+    display: flex;
+    padding: 26px;
+    justify-content: center;
+  }
+}
