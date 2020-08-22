@@ -34,3 +34,5 @@ Instagram Clone APP you can:
 ### Here is the backend repo
 https://github.com/hariclerry/instagram-clone-serverless-backend
 
+### Ref: Some of the code used in this project are from https://github.com/udacity/cloud-developer just for learning purpose
+
