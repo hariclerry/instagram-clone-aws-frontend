@@ -138,7 +138,7 @@ const Post = (props) => {
       alert("Feed update failed");
     }
   };
-
+ 
   return (
     <Fragment>
       <section>
@@ -159,6 +159,7 @@ const Post = (props) => {
         </div>
         {(feeds && feeds.length > 0 ) ? (
           <FeedLists
+            authUser={props.auth}
             feeds={feeds}
             onFeedDelete={handleFeedDelete}
             onFeedLike={handleFeedLikes}

@@ -5,7 +5,8 @@ import userAvatar from "../../assets/avatar.jpg";
 import "./feedLists.css";
 
 const FeedLists = (props) => {
-  const { feeds, onFeedDelete, handleEditShow, onFeedLike } = props;
+  const { feeds, onFeedDelete, handleEditShow, onFeedLike, authUser } = props;
+   const { name, nickname, picture } = authUser.decodeToken();
 
   return (
     <Fragment>
@@ -13,16 +14,17 @@ const FeedLists = (props) => {
         let classes = "fa fas fa-heart";
         if (feed.likes === false || feed.likes === null) classes += "-o";
         let likeClass = !feed.likes ? "unlike-icon" : "like-icon";
-          let likesCount = feed.likes ? `${1} Like` : null;
+        let likesCount = feed.likes ? `${1} Like` : null;
+        let userName = !nickname ? name : nickname
         return (
           <article key={feed.feedId} className="Post">
             <header className="Post-header">
               <div className="Post-user">
                 <div className="Post-user-avatar">
-                  <img src={userAvatar} alt="hari" />
+                  <img src={picture} alt="user avatar" />
                 </div>
                 <div className="Post-user-nickname">
-                  <span>John Doe</span>
+                  <span>{userName}</span>
                 </div>
               </div>
               <button onClick={() => onFeedDelete(feed.feedId)}>
@@ -49,11 +51,13 @@ const FeedLists = (props) => {
                   onClick={() => onFeedLike(feed)}
                 ></i>
               </OverlayTrigger>
-              <span style={{color: "black", paddingLeft: "5px"}}>{likesCount}</span>
+              <span style={{ color: "black", paddingLeft: "5px" }}>
+                {likesCount}
+              </span>
             </div>
             <div className="Post-caption">
               <p>
-                <strong>@JohnnyD</strong>
+                <strong>{userName}</strong>
                 {feed.imageCaption}
               </p>
               <OverlayTrigger
