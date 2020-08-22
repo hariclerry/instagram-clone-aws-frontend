@@ -6,5 +6,5 @@ export const authConfig = {
          // TODO: Create an Auth0 application and copy values from it into this map
          domain: "dev-ubmsssnp.us.auth0.com", // Auth0 domain
          clientId: "uLBwPMHpLMkRe5ivfC7a4hJB9JEC3WD9", // Auth0 client id
-         callbackUrl: "https://angry-golick-d51806.netlify.app/callback",
+         callbackUrl: "http://localhost:3000/callback",
        };
