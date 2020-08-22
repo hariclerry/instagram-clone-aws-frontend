@@ -3,8 +3,8 @@ const apiId = "x750jeyih3";
 export const apiEndpoint = `https://${apiId}.execute-api.us-east-2.amazonaws.com/dev`;
 
 export const authConfig = {
-  // TODO: Create an Auth0 application and copy values from it into this map
-  domain: "dev-ubmsssnp.us.auth0.com", // Auth0 domain
-  clientId: "uLBwPMHpLMkRe5ivfC7a4hJB9JEC3WD9", // Auth0 client id
-  callbackUrl: "http://localhost:3000/callback",
-};
+         // TODO: Create an Auth0 application and copy values from it into this map
+         domain: "dev-ubmsssnp.us.auth0.com", // Auth0 domain
+         clientId: "uLBwPMHpLMkRe5ivfC7a4hJB9JEC3WD9", // Auth0 client id
+         callbackUrl: "https://angry-golick-d51806.netlify.app/callback",
+       };
